@@ -1,0 +1,161 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class House {
+public:
+    int id;
+    string owner;
+    string phone;
+    string address;
+    double rent;
+    string status;
+
+    House(int id, string owner, string phone, string address, double rent, string status) {
+        this->id = id;
+        this->owner = owner;
+        this->phone = phone;
+        this->address = address;
+        this->rent = rent;
+        this->status = status;
+    }
+
+    void display() {
+        cout << id << "\t" << owner << "\t" << phone << "\t" << address << "\t" << rent << "\t" << status << endl;
+    }
+};
+
+class RentalSystem {
+private:
+    vector<House> houses;
+    int next_id;
+
+public:
+    RentalSystem() : next_id(1) {}
+
+    void addHouse() {
+        string owner, phone, address, status;
+        double rent;
+        cout << "Enter owner name: ";
+        cin >> owner;
+        cout << "Enter phone: ";
+        cin >> phone;
+        cout << "Enter address: ";
+        cin >> address;
+        cout << "Enter rent: ";
+        cin >> rent;
+        cout << "Enter status (not rented/rented): ";
+        cin >> status;
+
+        House house(next_id, owner, phone, address, rent, status);
+        houses.push_back(house);
+        next_id++;
+        cout << "House added successfully" << endl;
+    }
+
+    void findHouse() {
+        int id;
+        cout << "Enter house ID to search: ";
+        cin >> id;
+        for (auto &house : houses) {
+            if (house.id == id) {
+                house.display();
+                return;
+            }
+        }
+        cout << "No house found with the given ID" << endl;
+    }
+
+    void deleteHouse() {
+        int id;
+        cout << "Enter house ID to delete: ";
+        cin >> id;
+        for (auto it = houses.begin(); it != houses.end(); ++it) {
+            if (it->id == id) {
+                houses.erase(it);
+                cout << "House deleted successfully" << endl;
+                return;
+            }
+        }
+        cout << "No house found with the given ID" << endl;
+    }
+
+    void modifyHouse() {
+        int id;
+        cout << "Enter house ID to modify: ";
+        cin >> id;
+        for (auto &house : houses) {
+            if (house.id == id) {
+                cout << "Enter new owner name (current: " << house.owner << "): ";
+                cin >> house.owner;
+                cout << "Enter new phone (current: " << house.phone << "): ";
+                cin >> house.phone;
+                cout << "Enter new address (current: " << house.address << "): ";
+                cin >> house.address;
+                cout << "Enter new rent (current: " << house.rent << "): ";
+                cin >> house.rent;
+                cout << "Enter new status (not rented/rented) (current: " << house.status << "): ";
+                cin >> house.status;
+                cout << "House modified successfully" << endl;
+                return;
+            }
+        }
+        cout << "No house found with the given ID" << endl;
+    }
+
+    void listHouses() {
+        cout << "ID\tOwner\tPhone\tAddress\tRent\tStatus" << endl;
+        for (auto &house : houses) {
+            house.display();
+        }
+    }
+
+    void exitSystem() {
+        cout << "Exiting the program~~" << endl;
+    }
+
+    void menu() {
+        int choice;
+        while (true) {
+            cout << "House Rental System" << endl;
+            cout << "1. Add House" << endl;
+            cout << "2. Find House" << endl;
+            cout << "3. Delete House" << endl;
+            cout << "4. Modify House" << endl;
+            cout << "5. List Houses" << endl;
+            cout << "6. Exit System" << endl;
+            cout << "Choose (1-6): ";
+            cin >> choice;
+            switch (choice) {
+                case 1:
+                    addHouse();
+                    break;
+                case 2:
+                    findHouse();
+                    break;
+                case 3:
+                    deleteHouse();
+                    break;
+                case 4:
+                    modifyHouse();
+                    break;
+                case 5:
+                    listHouses();
+                    break;
+                case 6:
+                    exitSystem();
+                    return;
+                default:
+                    cout << "Invalid choice, please try again" << endl;
+            }
+        }
+    }
+};
+
+int main() {
+    RentalSystem system;
+    system.menu();
+    return 0;
+}
